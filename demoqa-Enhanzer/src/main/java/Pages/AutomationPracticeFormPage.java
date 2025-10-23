@@ -1,4 +1,4 @@
-package pages;
+package Pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -21,23 +21,19 @@ public class AutomationPracticeFormPage {
     private final By uploadPictureButton = By.id("uploadPicture");
     private final By currentAddressArea = By.id("currentAddress");
     private final By submitButton = By.id("submit");
-    private final By thanksHeader = By.id("example-modal-sizes-title-lg"); // Locator for submission success modal
-    // Locator for checking if a field shows the browser's native invalid state
+    private final By thanksHeader = By.id("example-modal-sizes-title-lg");
+
     private final By requiredFieldError = By.cssSelector(".was-validated :invalid");
 
     public AutomationPracticeFormPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         driver.get("https://demoqa.com/automation-practice-form");
-        // Ensure the page loads before interacting
         wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameField));
     }
 
-    // --- Action Methods ---
 
-    /**
-     * Fills the core mandatory fields of the form.
-     */
+
     public void fillForm(String fName, String lName, String email, String mobile) {
         driver.findElement(firstNameField).sendKeys(fName);
         driver.findElement(lastNameField).sendKeys(lName);
@@ -46,24 +42,16 @@ public class AutomationPracticeFormPage {
         driver.findElement(genderMaleRadio).click();
     }
 
-    /**
-     * Fills the current address field, used for edge cases like XSS.
-     */
+
     public void fillCurrentAddress(String payload) {
         driver.findElement(currentAddressArea).sendKeys(payload);
     }
 
-    /**
-     * Handles file upload functionality.
-     */
     public void uploadFile(String filePath) {
         // SendKeys works directly on the hidden input field for file uploads
         driver.findElement(uploadPictureButton).sendKeys(filePath);
     }
 
-    /**
-     * Clicks the submit button, using JavaScript to ensure visibility/clickability.
-     */
     public void clickSubmit() {
         WebElement submitBtn = driver.findElement(submitButton);
         ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
@@ -83,18 +71,12 @@ public class AutomationPracticeFormPage {
         }
     }
 
-    /**
-     * Gets the browser's native HTML5 validation error message for the mobile field.
-     */
     public String getMobileNumberNativeErrorMessage() {
         return driver.findElement(userMobileField).getAttribute("validationMessage");
     }
 
-    /**
-     * Checks if the email field is marked as invalid by the browser/app.
-     */
     public boolean isEmailFieldInvalid() {
-        // Check for common error class or rely on native browser validation
+
         return driver.findElement(userEmailField).getAttribute("class").contains("field-error")
                 || driver.findElement(userEmailField).getAttribute("class").contains("is-invalid");
     }

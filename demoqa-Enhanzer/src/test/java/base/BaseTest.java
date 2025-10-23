@@ -20,14 +20,14 @@ public class BaseTest {
 
     @BeforeMethod
     public void setup() {
-        // Use WebDriverManager to automatically handle driver setup
+
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
     }
 
     @AfterMethod
-    // Capturing screenshots for failures automatically
+
     public void tearDown(ITestResult result) {
         if (ITestResult.FAILURE == result.getStatus()) {
             captureScreenshot(result.getMethod().getMethodName());
@@ -38,14 +38,14 @@ public class BaseTest {
         }
     }
 
-    // Helper method for capturing and saving the screenshot
+
     private void captureScreenshot(String testName) {
         try {
             File sourceFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
             String fileName = testName + "_" + timestamp + ".png";
 
-            // Define the destination path relative to the project root
+
             File destinationFile = new File("target/screenshots/" + fileName);
             FileUtils.copyFile(sourceFile, destinationFile);
 
